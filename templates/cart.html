@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Ваша корзина</h2>
+
+{% if cart_items %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Товар</th>
+                            <th>Цена</th>
+                            <th>Кол-во</th>
+                            <th>Итого</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                        <tr>
+                            <td><strong>{{ item.product.name }}</strong></td>
+                            <td>{{ "{:,.0f}".format(item.product.price) }} ₴</td>
+                            <td>{{ item.quantity }}</td>
+                            <td><strong>{{ "{:,.0f}".format(item.product.price * item.quantity) }} ₴</strong></td>
+                            <td>
+                                <form action="{{ url_for('cart.remove_from_cart', item_id=item.id) }}" method="POST">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 p-3">
+            <h4>Итого: <span class="text-primary">{{ "{:,.0f}".format(total) }} ₴</span></h4>
+            <hr>
+            <a href="{{ url_for('order.checkout') }}" class="btn btn-success w-100 btn-lg">Оформить заказ</a>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="text-center py-5">
+    <h4>Ваша корзина пуста</h4>
+    <a href="{{ url_for('main.catalog') }}" class="btn btn-primary mt-3">Перейти в каталог</a>
+</div>
+{% endif %}
+{% endblock %}

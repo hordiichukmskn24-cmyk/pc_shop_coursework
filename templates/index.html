@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Главная - PC Hardware Store{% endblock %}
+
+{% block content %}
+<div class="p-5 mb-4 bg-white rounded-3 shadow-sm border">
+    <div class="container-fluid py-3 text-center">
+        <h1 class="display-5 fw-bold">Комплектующие для вашего ПК</h1>
+        <p class="fs-5 text-muted">Высокопроизводительные процессоры, видеокарты и компоненты по лучшим ценам.</p>
+        <a href="{{ url_for('main.catalog') }}" class="btn btn-primary btn-lg mt-2">Перейти в каталог</a>
+    </div>
+</div>
+
+<h3 class="mb-4">Популярные товары</h3>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for product in products %}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text text-muted small">{{ product.description[:90] }}...</p>
+                <div class="mt-auto d-flex justify-content-between align-items-center pt-3">
+                    <span class="fs-5 fw-bold text-primary">{{ "{:,.0f}".format(product.price) }} ₴</span>
+                    <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="btn btn-outline-primary btn-sm">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

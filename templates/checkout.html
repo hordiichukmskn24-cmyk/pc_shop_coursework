@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Оформление заказа{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Оформление заказа</h2>
+<div class="row">
+    <div class="col-md-7">
+        <div class="card shadow-sm border-0 p-4 mb-4">
+            <h4 class="mb-3">Способ доставки (Паттерн Strategy)</h4>
+            <form method="POST">
+                <div class="form-check mb-3 p-3 border rounded">
+                    <input class="form-check-input" type="radio" name="shipping_method" id="postal" value="postal" checked>
+                    <label class="form-check-label w-100" for="postal">
+                        <strong>Доставка у відділення Пошти</strong> — 80 ₴
+                    </label>
+                </div>
+                <div class="form-check mb-3 p-3 border rounded">
+                    <input class="form-check-input" type="radio" name="shipping_method" id="courier" value="courier">
+                    <label class="form-check-label w-100" for="courier">
+                        <strong>Кур'єрська доставка</strong> — 150 ₴ (Безкоштовно від 5000 ₴)
+                    </label>
+                </div>
+                <div class="form-check mb-4 p-3 border rounded">
+                    <input class="form-check-input" type="radio" name="shipping_method" id="pickup" value="pickup">
+                    <label class="form-check-label w-100" for="pickup">
+                        <strong>Самовивіз з магазину</strong> — Безкоштовно
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-success btn-lg w-100">Подтвердить заказ</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card shadow-sm border-0 p-3">
+            <h4>Товары в заказе</h4>
+            <hr>
+            {% for item in cart_items %}
+            <div class="d-flex justify-content-between mb-2">
+                <span>{{ item.product.name }} x{{ item.quantity }}</span>
+                <strong>{{ "{:,.0f}".format(item.product.price * item.quantity) }} ₴</strong>
+            </div>
+            {% endfor %}
+            <hr>
+            <div class="d-flex justify-content-between fs-5 fw-bold">
+                <span>Сумма товаров:</span>
+                <span class="text-primary">{{ "{:,.0f}".format(subtotal) }} ₴</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
